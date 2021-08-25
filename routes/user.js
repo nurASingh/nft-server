@@ -1,5 +1,5 @@
 /* post users listing. */
-router.post('/register', function (req, res, next) {
+router.post('/user', function (req, res, next) {
     var obj = req.body.user;
     User.findOne({ phone: obj.phone }, function (err, result) {
       if (err) {
@@ -21,9 +21,8 @@ router.post('/register', function (req, res, next) {
   });
   
   
-  router.post('/login', function (req, res, next) {
+  router.post('/user/login', function (req, res, next) {
     var userid = req.body.user.phone, password = req.body.user.password;
-  
     User.findOne({ phone: userid, password: password }, function (err, result) {
       if (err) {
         res.send({ passed: false, message: 'Error while log in' });
@@ -36,3 +35,20 @@ router.post('/register', function (req, res, next) {
       }
     });
   });
+
+
+  router.get('/account/findByStatus',  function (req, res, next) {
+    res.send("Find the satus of user Active / Inactive");
+  });
+
+
+  router.get('/user/logout',  function (req, res, next) {
+    res.send("Find the satus of user Active / Inactive");
+  });
+
+
+  router.get('/user/{username}',  function (req, res, next) {
+    res.send("Find the satus of user Active / Inactive");
+  });
+
+  module.exports = router;
