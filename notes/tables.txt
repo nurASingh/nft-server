@@ -1,0 +1,20 @@
+db.createCollection("users", { capped : false, size : 5242880, max : 5000 } )
+db.createCollection("sales", { capped : false, size : 5242880, max : 5000 } )
+db.createCollection("payments", { capped : false, size : 5242880, max : 5000 } )
+db.createCollection("purchase", { capped : false, size : 5242880, max : 5000 } )
+db.createCollection("saving", { capped : false, size : 5242880, max : 5000 } )
+
+REST APIs
+
+users -
+get( verifyuser, response)
+post('/register')
+delet(/)
+put(/)
+
+drop tables
+db.users.drop();
+db.payments.drop();
+db.purchase.drop();
+db.saving.drop();
+db.sales.drop();

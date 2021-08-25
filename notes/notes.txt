@@ -1,0 +1,5 @@
+mongo url
+mongo ds053156.mlab.com:53156/shubhlabh -u arun -p 123456
+
+unexpected shutdown
+mongod --repair
