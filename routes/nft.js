@@ -29,7 +29,7 @@ async function callContract(name,functioname){
 	console.log(result);
 }
 
-async function deployContract(name,path,next){
+async function deployContract(name,path,next,res){
   const { makeContractDeploy, broadcastTransaction } = require('@stacks/transactions');
   const { StacksTestnet, StacksMainnet } =require('@stacks/network');
   const network = new StacksTestnet();
@@ -42,6 +42,7 @@ async function deployContract(name,path,next){
   const transaction = await makeContractDeploy(txOptions);
   const broadcastResponse = await broadcastTransaction(transaction, network);
   console.log(broadcastResponse);
+  res.send(broadcastResponse);
   next();
 }
 
@@ -99,28 +100,20 @@ async function mint(name){
 } 
 
 router.get('/mynft',  function (req, res, next) {
-  deployContract('nft-trait','/contract/clarity-nft/contracts/nft-trait.clar',function(){
-    console.log("nft trait contract deployed");
-    deployContract('mynft-trait','/contract/clarity-nft/contracts/my-nft.clar',function(){
-      console.log("My NFt deployed , calling claim")
-      callContract('my-nft','claim');
-    })
-  });
-  res.send("This is the list of all the NFT");
+  
+  res.send(NFT);
 });
 
-router.get('/mynft/{nftname}',  function (req, res, next) {
-  res.send("This is the NFT filterded by name");
+router.get('/mynft/:nftname',  function (req, res, next) {
+  res.send(NFT);
 });
 
-router.post('/mintnft/{nftname}', function (req, res, next) {
-  NFT.create(obj, function (err, result) {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send("A new NFT minted");
-    }
-  });
+router.post('/mintnft/:nftname', function (req, res, next) { 
+  console.log("nft trait contract deployed");
+    deployContract(req.params.nftname,'./contract/clarity-nft/contracts/my-nft.clar',function(){
+      console.log(req.params.nftname + " deployed , calling claim")
+      callContract(req.params.nftname,'claim');
+    },res)
 });
 
 module.exports = router;
