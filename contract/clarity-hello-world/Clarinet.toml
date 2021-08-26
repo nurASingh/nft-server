@@ -1,0 +1,6 @@
+[project]
+name = "clarity-hello-world"
+requirements = []
+[contracts.hello-world]
+path = "contracts/hello-world.clar"
+depends_on = []

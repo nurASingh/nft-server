@@ -1,0 +1,6 @@
+[network]
+name = "testnet"
+node_rpc_address = "https://stacks-node-api.testnet.stacks.co"
+
+[accounts.deployer]
+mnemonic = "quote eager wolf arrive melt put cattle witness escape smoke glimpse later soul anger brush reopen canoe attract purchase trial select ignore shop physical"
