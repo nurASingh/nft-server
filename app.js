@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var config = require('./config.js');
 var routes = require('./routes/index');
 var nft = require('./routes/nft');
-
+var nft = require('./routes/user');
 //Express Object
 var app = express();
 
@@ -45,6 +45,7 @@ app.use(function (req, res, next) {
 
 app.use('/', routes);
 app.use('/nft', nft);
+app.use('/user', nft);
 
 app.post('/authTest' , function(req,res){
 
