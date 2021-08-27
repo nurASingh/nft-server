@@ -1,19 +1,15 @@
-FROM node:lts-alpine3.14
+FROM node:16-alpine3.11
+
+WORKDIR /usr/src/app
+
+COPY . /usr/src/app
 
 
-COPY bin .
-COPY models .
-COPY public .
-COPY routes .
-COPY typings .
-COPY view .
-COPY app.js .
-COPY config.js .
-COPY package.json .
-COPY typing.json .
-COPY verify.json .
-COPY Procfile .
 
-npm install
+RUN file="$(ls -1 /usr/src/app)" && echo $file
 
-npm start
+RUN npm install
+
+EXPOSE 8080
+
+CMD [ "npm", "start" ]
