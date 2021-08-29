@@ -12,8 +12,8 @@ async function callContract(name,functioname){
 	const { StacksTestnet, StacksMainnet } =require('@stacks/network');
 	const bufferCVFromString = bufferCV(Buffer.from("foo"));
 	const contractAddress = config.senderAddress;
-	const contractName = name;
-	const functionName = functioname;
+	const contractName = "ST22QPESFJ8XKJDWR1MHVXV2S4NBE44BA944NS4D2.my-nft";
+	const functionName = "claim";
 	const buffer = bufferCVFromString;
 	const network = new StacksTestnet();
 	const senderAddress = config.senderAddress;
@@ -105,6 +105,7 @@ router.get('/mynft',  function (req, res, next) {
 });
 
 router.get('/mynft/:nftname',  function (req, res, next) {
+  callContract("tets","test");
   res.send(NFT);
 });
 
