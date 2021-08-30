@@ -7,12 +7,47 @@ const BN = require('bn.js');
 var config= require('../config.js')
 
 
+async function makeSMcall(res){
+  const { makeContractCall, bufferCV, broadcastTransaction, AnchorMode ,makeStandardSTXPostCondition,FungibleConditionCode} =require('@stacks/transactions');
+  const { StacksTestnet, StacksMainnet }= require('@stacks/network');
+  const BigNum = require('bn.js');
+  const bufferCVFromString = bufferCV(Buffer.from("foo"));
+  const buffer = bufferCVFromString;
+  const network = new StacksTestnet();
+  const postConditionAddress = config.senderAddress;
+  const postConditionCode = FungibleConditionCode.GreaterEqual;
+  const postConditionAmount = new BigNum(1000000);
+  const postConditions = [
+    makeStandardSTXPostCondition(postConditionAddress, postConditionCode, postConditionAmount),
+  ];
+
+  const txOptions = {
+    contractAddress: config.senderAddress,
+    contractName: 'my-nft',
+    functionName: 'claim',
+    functionArgs: [],
+    senderKey: 'b244296d5907de9864c0b0d51f98a13c52890be0404e83f273144cd5b9960eed01',
+    validateWithAbi: false,
+    network,
+    postConditions,
+    anchorMode: AnchorMode.Any,
+  };
+
+  const transaction = await makeContractCall(txOptions);
+  const btrax = await broadcastTransaction(transaction, network);
+  const resp= {
+    "transaction" : transaction,
+    "btrax": btrax
+  }
+  res.send(resp);
+}
+
 async function callContract(name,functioname){
-	const { bufferCV,callReadOnlyFunction } = require('@stacks/transactions');
+	const { bufferCV,makeContractCall } = require('@stacks/transactions');
 	const { StacksTestnet, StacksMainnet } =require('@stacks/network');
 	const bufferCVFromString = bufferCV(Buffer.from("foo"));
 	const contractAddress = config.senderAddress;
-	const contractName = "ST22QPESFJ8XKJDWR1MHVXV2S4NBE44BA944NS4D2.my-nft";
+	const contractName = "my-nft";
 	const functionName = "claim";
 	const buffer = bufferCVFromString;
 	const network = new StacksTestnet();
@@ -25,7 +60,7 @@ async function callContract(name,functioname){
 	  network,
 	  senderAddress,
 	};
-	const result = await callReadOnlyFunction(options);
+	const result = await makeContractCall(options);
 	console.log(result);
 }
 
@@ -100,13 +135,11 @@ async function mint(name){
 } 
 
 router.get('/mynft',  function (req, res, next) {
-  
   res.send(NFT);
 });
 
 router.get('/mynft/:nftname',  function (req, res, next) {
-  callContract("tets","test");
-  res.send(NFT);
+  makeSMcall(res);
 });
 
 router.post('/mintnft/:nftname', function (req, res, next) { 
